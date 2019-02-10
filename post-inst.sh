@@ -8,20 +8,18 @@
 # More at nextcloudpi.com
 #
 
-install()   
+configure()
 { 
   # stop mysqld and redis
-  mysqladmin -u root shutdown
-  kill $( cat /run/redis/redis-server.pid )
+  mysqladmin -u root shutdown || true
+  kill $( cat /run/redis/redis-server.pid ) || true
   [[ -f /run/crond.pid ]] && kill $( cat /run/crond.pid )
-  pkill -f php-fpm
+  pkill -f php-fpm || true
 
   # cleanup all NCP extras
   source /usr/local/etc/library.sh
-  cd /usr/local/etc/ncp-config.d/
-  for script in *.sh; do
-    cleanup_script $script
-  done
+  find /usr/local/bin/ncp -name '*.sh' | \
+    while read script; do cleanup_script $script; done
 
   # clean packages and installation logs
   apt-get autoremove -y

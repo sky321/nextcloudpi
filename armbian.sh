@@ -10,6 +10,7 @@
 # More at https://ownyourbits.com/2017/02/13/nextcloud-ready-raspberry-pi-image/
 #
 
+set -e
 
 RELEASE=$1
 LINUXFAMILY=$2
@@ -29,12 +30,16 @@ cd /tmp/overlay
 echo -e "\nInstalling NextCloudPi"
 source etc/library.sh
 
-install_script  lamp.sh
-install_script  etc/ncp-config.d/nc-nextcloud.sh
-activate_script etc/ncp-config.d/nc-nextcloud.sh
-install_script  ncp.sh
-activate_script etc/ncp-config.d/nc-init.sh
-install_script  post-inst.sh
+mkdir -p /usr/local/etc/ncp-config.d/
+cp etc/ncp-config.d/nc-nextcloud.cfg /usr/local/etc/ncp-config.d/
+
+install_app    lamp.sh
+install_app    bin/ncp/CONFIG/nc-nextcloud.sh
+run_app_unsafe bin/ncp/CONFIG/nc-nextcloud.sh
+rm /usr/local/etc/ncp-config.d/nc-nextcloud.cfg    # armbian overlay is ro
+install_app    ncp.sh
+run_app_unsafe bin/ncp/CONFIG/nc-init.sh
+run_app_unsafe post-inst.sh
 
 cd -
 

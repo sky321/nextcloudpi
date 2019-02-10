@@ -12,6 +12,7 @@ WEBADMIN=ncp
 WEBPASSWD=ownyourbits
 BRANCH=master
 
+BINDIR=/usr/local/bin/ncp
 CONFDIR=/usr/local/etc/ncp-config.d/
 APTINSTALL="apt-get install -y --no-install-recommends"
 export DEBIAN_FRONTEND=noninteractive
@@ -21,8 +22,8 @@ install()
 {
   # NCP-CONFIG
   apt-get update
-  $APTINSTALL git dialog whiptail
-  mkdir -p $CONFDIR
+  $APTINSTALL git dialog whiptail jq
+  mkdir -p "$CONFDIR" "$BINDIR"
 
   # include option in raspi-config (only Raspbian)
   test -f /usr/bin/raspi-config && {
@@ -57,6 +58,7 @@ EOF
       Require ip 192.168
       Require ip 172
       Require ip 10
+      Require ip fd00::/8
    </RequireAny>
 
   </RequireAll>
@@ -129,12 +131,8 @@ EOF
 
   cat > /home/www/ncp-launcher.sh <<'EOF'
 #!/bin/bash
-DIR=/usr/local/etc/ncp-config.d
-[[ -f $DIR/$1  ]] || { echo "File not found"; exit 1; }
-[[ "$1" =~ ../ ]] && { echo "Forbidden path"; exit 2; }
 source /usr/local/etc/library.sh
-cd $DIR
-launch_script $1
+run_app $1
 EOF
   chmod 700 /home/www/ncp-launcher.sh
   echo "www-data ALL = NOPASSWD: /home/www/ncp-launcher.sh , /sbin/halt, /sbin/reboot" >> /etc/sudoers
@@ -160,16 +158,18 @@ EOF
 #!/bin/bash
 # wicd service finishes before completing DHCP
 while :; do
-  IFACE="$( ip r | grep "default via" | awk '{ print $5 }' | head -1 )"
-  IP="$( ip a show dev "$IFACE" | grep global | grep -oP '\d{1,3}(.\d{1,3}){3}' | head -1 )"
-  [[ "$IP" != "" ]] && break
+  iface="$( ip r | grep "default via" | awk '{ print $5 }' | head -1 )"
+  ip="$( ip a show dev "$iface" | grep global | grep -oP '\d{1,3}(.\d{1,3}){3}' | head -1 )"
+
+  public_ip="$(curl icanhazip.com 2>/dev/null)"
+  [[ "$public_ip" != "" ]] && ncc config:system:set trusted_domains 11 --value="$public_ip"
+
+  [[ "$ip" != "" ]] && break
   sleep 3
 done
-cd /var/www/nextcloud
-sudo -u www-data php occ config:system:set trusted_domains 1 --value=$IP
+ncc config:system:set trusted_domains 1 --value=$ip
 EOF
 
-  # make sure this is called on last re-boot
   [[ "$DOCKERBUILD" != 1 ]] && systemctl enable nextcloud-domain 
 
   # NEXTCLOUDPI UPDATES
@@ -182,8 +182,8 @@ EOF
   chown root:www-data /var/run/.ncp-latest-version
   chmod g+w           /var/run/.ncp-latest-version
 
-  # update to latest version from github as part of the build process
-  bin/ncp-update $BRANCH
+  # Install all ncp-apps
+  bin/ncp-update $BRANCH || exit 1
 
   # LIMIT LOG SIZE
   grep -q maxsize /etc/logrotate.d/apache2 || sed -i /weekly/amaxsize2M /etc/logrotate.d/apache2

@@ -1,5 +1,91 @@
 
-[v0.67.7](https://github.com/nextcloud/nextcloudpi/commit/99fb4a5) (2018-12-16) fix tempdir config
+[v1.6.0](https://github.com/nextcloud/nextcloudpi/commit/5118ddc) (2019-02-07) upgrade to NC15.0.4
+
+[v1.5.2  ](https://github.com/nextcloud/nextcloudpi/commit/1a6b7df) (2019-02-07) nc-trusted-domains: add description
+
+[v1.5.1  ](https://github.com/nextcloud/nextcloudpi/commit/a1842bc) (2019-01-30) nc-update-nc-apps-auto: log upgrades
+
+[v1.5.0  ](https://github.com/nextcloud/nextcloudpi/commit/8ca3535) (2019-01-30) added nc-update-nc-apps and nc-update-nc-apps-auto
+
+[v1.4.11 ](https://github.com/nextcloud/nextcloudpi/commit/6331ce5) (2019-01-28) update: make letsencrypt update more resiliant (2)
+
+[v1.4.10 ](https://github.com/nextcloud/nextcloudpi/commit/55121d4) (2019-01-27) update: make letsencrypt update more resiliant
+
+[v1.4.9  ](https://github.com/nextcloud/nextcloudpi/commit/9a36ceb) (2019-01-25) letsencrypt: use the latest github version
+
+[v1.4.8  ](https://github.com/nextcloud/nextcloudpi/commit/338da33) (2019-01-26) ncp-update-nc: fix unnecessary quotes
+
+[v1.4.7  ](https://github.com/nextcloud/nextcloudpi/commit/ffc1fa5) (2019-01-25) ncp-config: fix local variables
+
+[v1.4.6  ](https://github.com/nextcloud/nextcloudpi/commit/b338ede) (2019-01-24) ncp-config: fix missing variable
+
+[v1.4.5  ](https://github.com/nextcloud/nextcloudpi/commit/b7efa7a) (2019-01-22) armbian: fix cron permissions bug (2)
+
+[v1.4.4  ](https://github.com/nextcloud/nextcloudpi/commit/af426a5) (2019-01-22) armbian: fix cron permissions bug
+
+[v1.4.3  ](https://github.com/nextcloud/nextcloudpi/commit/0e062aa) (2019-01-21) dnsmasq: detect IP from config file (#782)
+
+[v1.4.2  ](https://github.com/nextcloud/nextcloudpi/commit/57728e2) (2019-01-21) Proposed fix for issue #773 (#781)
+
+[v1.4.1  ](https://github.com/nextcloud/nextcloudpi/commit/d0ca44a) (2019-01-16) docker: support for ncp-update-nc
+
+[v1.4.0  ](https://github.com/nextcloud/nextcloudpi/commit/1dd1bb7) (2019-01-16) add nc-trusted-domains
+
+[v1.3.12 ](https://github.com/nextcloud/nextcloudpi/commit/1f11d40) (2019-01-16) add public IP to trusted domains
+
+[v1.3.11 ](https://github.com/nextcloud/nextcloudpi/commit/84ac075) (2019-01-16) nc-backup: parallel compression
+
+[v1.3.10 ](https://github.com/nextcloud/nextcloudpi/commit/2419e57) (2019-01-15) nc-backup: compress in place and exclude previews folder
+
+[v1.3.9  ](https://github.com/nextcloud/nextcloudpi/commit/0b8252b) (2019-01-15) build: add exfat utils for external storage
+
+[v1.3.8  ](https://github.com/nextcloud/nextcloudpi/commit/193d89b) (2019-01-14) nc-datadir: fix fail2ban logpath
+
+[v1.3.7  ](https://github.com/nextcloud/nextcloudpi/commit/2ac9b8b) (2019-01-14) ncp-web: allow private IPv6 addresses
+
+[v1.3.6  ](https://github.com/nextcloud/nextcloudpi/commit/34cba9f) (2019-01-14) nc-automount: add delays to some services in a persistent way
+
+[v1.3.5  ](https://github.com/nextcloud/nextcloudpi/commit/6fb9c9b) (2019-01-14) nc-hdd-test: try to detect device type if auto doesnt work
+
+[v1.3.4  ](https://github.com/nextcloud/nextcloudpi/commit/9b1ecbb) (2019-01-14) nc-info: fix automount reporting
+
+[v1.3.3  ](https://github.com/nextcloud/nextcloudpi/commit/389ed0c) (2019-01-14) nc-ramlog: adapt to armbian
+
+[v1.3.2  ](https://github.com/nextcloud/nextcloudpi/commit/be9a546) (2019-01-14) nc-automount: fix description
+
+[v1.3.1  ](https://github.com/nextcloud/nextcloudpi/commit/61e3ff3) (2019-01-13) ncp-update: fail if version cant be parsed
+
+[v1.3.0  ](https://github.com/nextcloud/nextcloudpi/commit/2c943b7) (2019-01-12) upgrade to NC15.0.2
+
+[v1.2.0  ](https://github.com/nextcloud/nextcloudpi/commit/9eaab31) (2019-01-08) add NCP Nextcloud app
+
+[v1.1.3  ](https://github.com/nextcloud/nextcloudpi/commit/d21592c) (2019-01-11) nc-update-nextcloud: only try to restore on reboot once
+
+[v1.1.2  ](https://github.com/nextcloud/nextcloudpi/commit/228c818) (2019-01-10) ncp-web: fix section unselected when sidebar reloads
+
+[v1.1.1  ](https://github.com/nextcloud/nextcloudpi/commit/6ba0cb0) (2019-01-10) ncp-web: escape HTML in details box
+
+[v1.1.0  ](https://github.com/nextcloud/nextcloudpi/commit/0ff1df9) (2019-01-08) upgrade to NC15
+
+[v1.0.2  ](https://github.com/nextcloud/nextcloudpi/commit/06b00e4) (2019-01-09) wizard: dont change missing parameters
+
+[v1.0.1  ](https://github.com/nextcloud/nextcloudpi/commit/f722c45) (2019-01-08) nc-update-nc: remove backup after restoring
+
+[v1.0.0  ](https://github.com/nextcloud/nextcloudpi/commit/013198c) (2019-01-08) ncp-config: allow empty values
+
+[v0.67.13](https://github.com/nextcloud/nextcloudpi/commit/21fee19) (2018-12-31) ncp-web: new chinese translate and update chinese translate. (#721)
+
+[v0.67.12](https://github.com/nextcloud/nextcloudpi/commit/a38be5e) (2018-12-29) curl installer: add provisioning step
+
+[v0.67.11](https://github.com/nextcloud/nextcloudpi/commit/4307b14) (2018-12-27) dynDNS: pdate cron execution interval (#754)
+
+[v0.67.10](https://github.com/nextcloud/nextcloudpi/commit/2e9440d) (2018-12-23) log2ram:  adapt to new name in armbian (#749)
+
+[v0.67.9 ](https://github.com/nextcloud/nextcloudpi/commit/e87c972) (2018-12-21) docker: fix DATADIR variable in nc-backup (#746)
+
+[v0.67.8 ](https://github.com/nextcloud/nextcloudpi/commit/9766dc2) (2018-12-17) nc-init: update echo at end when init done. (#738)
+
+[v0.67.7 ](https://github.com/nextcloud/nextcloudpi/commit/d75ecc2) (2018-12-16) fix tempdir config
 
 [v0.67.6 ](https://github.com/nextcloud/nextcloudpi/commit/ca7bc90) (2018-12-06) nc-init: fix missing variable
 

@@ -17,6 +17,8 @@ IMG="NextCloudPi_RPi_$( date  "+%m-%d-%y" ).img"
 
 ##############################################################################
 
+pgrep -f qemu-arm-static &>/dev/null && { echo "qemu-arm-static already running. Abort"; exit 1; }
+
 ## preparations
 
 IMG=tmp/"$IMG"
@@ -35,10 +37,12 @@ echo -e "\e[1m\n[ Build NCP ]\e[0m"
 prepare_chroot_raspbian "$IMG"
 
 mkdir raspbian_root/tmp/ncp-build
-cp -r *.sh etc bin ncp-web raspbian_root/tmp/ncp-build
+rsync -Aax --exclude-from .gitignore --exclude *.img --exclude *.bz2 . raspbian_root/tmp/ncp-build
 
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
   sudo chroot raspbian_root /bin/bash <<'EOFCHROOT'
+    set -e
+
     # mark the image as an image build
     touch /.ncp-image
 
@@ -57,20 +61,24 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     # install everything
     cd /tmp/ncp-build || exit 1
     source etc/library.sh
-    install_script  lamp.sh
-    install_script  etc/ncp-config.d/nc-nextcloud.sh
-    activate_script etc/ncp-config.d/nc-nextcloud.sh
-    install_script  ncp.sh
-    activate_script etc/ncp-config.d/nc-init.sh
-    install_script  post-inst.sh
+    mkdir -p /usr/local/etc/ncp-config.d
+    cp etc/ncp-config.d/nc-nextcloud.cfg /usr/local/etc/ncp-config.d/
+    install_app    lamp.sh
+    install_app    bin/ncp/CONFIG/nc-nextcloud.sh
+    run_app_unsafe bin/ncp/CONFIG/nc-nextcloud.sh
+    install_app    ncp.sh
+    run_app_unsafe bin/ncp/CONFIG/nc-init.sh
+    run_app_unsafe post-inst.sh
 
     # harden SSH further for Raspbian
     sed -i 's|^#PermitRootLogin .*|PermitRootLogin no|' /etc/ssh/sshd_config
 
     # default user 'pi' for SSH
-    sed -i 's|^USER_=.*|USER_=pi|'              /usr/local/etc/ncp-config.d/SSH.sh
-    sed -i 's|^PASS_=.*|PASS_=raspberry|'       /usr/local/etc/ncp-config.d/SSH.sh
-    sed -i 's|^CONFIRM_=.*|CONFIRM_=raspberry|' /usr/local/etc/ncp-config.d/SSH.sh
+    cfg="$(jq '.' etc/ncp-config.d/SSH.cfg)"
+    cfg="$(jq '.params[1].value = "pi"'        <<<"$cfg")"
+    cfg="$(jq '.params[2].value = "raspberry"' <<<"$cfg")"
+    cfg="$(jq '.params[3].value = "raspberry"' <<<"$cfg")"
+    echo "$cfg" > etc/ncp-config.d/SSH.cfg
 
     rm -rf /tmp/ncp-build
 EOFCHROOT
